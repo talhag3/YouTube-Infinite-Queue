@@ -12,6 +12,7 @@
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
+            position: relative;
         }
 
         #player,
@@ -48,8 +49,18 @@
             border-color: red;
         }
 
+        .github-link-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
         .github-link {
-            margin-top: 20px;
+            background-color: #333;
+            color: #fff;
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 5px;
         }
     </style>
 </head>
@@ -59,9 +70,10 @@
     <div id="queue" class="queue-container">
         <!-- The list of video thumbnails will be dynamically added here -->
     </div>
-    <div class="github-link">
-        <a href="https://github.com/talhag3" target="_blank">My GitHub Profile</a>
+    <div class="github-link-container">
+        <a href="https://github.com/talhag3" target="_blank" class="github-link">My GitHub Profile</a>
     </div>
+
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
