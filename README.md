@@ -29,7 +29,7 @@ Try out the [YouTube Infinite Queue Live Demo](https://youtube-infinite-queue.ve
 ![YouTube Infinite Queue Screenshot](screenshot.png)
 ## Author
 
-[Talha G.](https://github.com/talhag3)
+[Muhammad Talha Bilal](https://github.com/talhag3)
 
 ## License
 
