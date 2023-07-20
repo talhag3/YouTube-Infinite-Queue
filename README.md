@@ -13,6 +13,10 @@ YouTube Infinite Queue is a custom video playlist application that allows you to
 - Automatically play the next video when the current one ends
 - Attractive and user-friendly UI design
 
+## Live Demo
+
+Try out the [YouTube Infinite Queue Live Demo](https://youtube-infinite-queue.vercel.app/?vercelToolbarCode=X0VrJp_cIHdt0XK) to experience the app in action!
+
 ## How to Use
 
 1. Clone the repository or download the source code.
