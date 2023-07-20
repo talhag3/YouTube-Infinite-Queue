@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Custom YouTube Queue</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        #player,
+        #queue {
+            margin: 10px;
+        }
+
+        .queue-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .thumbnail-container {
+            margin: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .thumbnail-container img {
+            width: 160px;
+            height: 90px;
+            border: 2px solid transparent;
+        }
+
+        .thumbnail-container .title {
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        .thumbnail-container.current-video img {
+            border-color: red;
+        }
+
+        .github-link {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="player"></div>
+    <div id="queue" class="queue-container">
+        <!-- The list of video thumbnails will be dynamically added here -->
+    </div>
+    <div class="github-link">
+        <a href="https://github.com/talhag3" target="_blank">My GitHub Profile</a>
+    </div>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        // Replace these video IDs with the ones from your playlist
+        const videoIds = ["rzfmZC3kg3M", "OBF4kZS9baw", "icPHcK_cCF4"];
+
+        // Global variables
+        let player;
+        let currentVideoIndex = 0;
+
+        // Load the YouTube iframe API
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '360', // Set the desired player height
+                width: '640',  // Set the desired player width
+                videoId: videoIds[currentVideoIndex],
+                playerVars: {
+                    'autoplay': 1,
+                    'controls': 1,
+                    'rel': 0,
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        // Called when the video player is ready
+        function onPlayerReady(event) {
+            // Display the queue with video thumbnails
+            displayQueue();
+        }
+
+        // Called when the video player's state changes
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.ENDED) {
+                // Play the next video when the current video ends
+                playNextVideo();
+            }
+        }
+
+        // Display the queue with video thumbnails
+        function displayQueue() {
+            document.getElementById("queue").innerHTML = ""; // Clear existing queue
+            for (let i = 0; i < videoIds.length; i++) {
+                displayThumbnail(videoIds[i]);
+            }
+        }
+
+        // Display the video thumbnail in the queue
+        function displayThumbnail(videoId) {
+            const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/0.jpg`;
+            const thumbnailContainer = document.createElement("div");
+            thumbnailContainer.classList.add("thumbnail-container");
+
+            const thumbnailImage = document.createElement("img");
+            thumbnailImage.src = thumbnailUrl;
+            thumbnailImage.classList.add("thumbnail");
+
+            // Add an event listener to play the corresponding video when the thumbnail is clicked
+            thumbnailImage.addEventListener("click", () => {
+                playVideo(videoId);
+            });
+
+            const videoTitle = document.createElement("div");
+            videoTitle.innerText = `Video ${videoIds.indexOf(videoId) + 1}`;
+
+            thumbnailContainer.appendChild(thumbnailImage);
+            thumbnailContainer.appendChild(videoTitle);
+
+            document.getElementById("queue").appendChild(thumbnailContainer);
+        }
+
+        // Play the video with the given video ID
+        function playVideo(videoId) {
+            const index = videoIds.indexOf(videoId);
+            if (index !== -1) {
+                currentVideoIndex = index;
+                player.loadVideoById(videoId);
+                // Update the queue to highlight the current video
+                updateQueueDisplay(videoId);
+            }
+        }
+
+        // Play the next video in the queue
+        function playNextVideo() {
+            currentVideoIndex = (currentVideoIndex + 1) % videoIds.length;
+            player.loadVideoById(videoIds[currentVideoIndex]);
+            // Update the queue to highlight the current video
+            updateQueueDisplay(videoIds[currentVideoIndex]);
+        }
+
+        // Update the queue display to highlight the current video
+        function updateQueueDisplay(currentVideoId) {
+            const thumbnailContainers = document.getElementsByClassName("thumbnail-container");
+            for (let i = 0; i < thumbnailContainers.length; i++) {
+                const thumbnailContainer = thumbnailContainers[i];
+                const videoId = videoIds[i];
+                if (videoId === currentVideoId) {
+                    thumbnailContainer.classList.add("current-video");
+                } else {
+                    thumbnailContainer.classList.remove("current-video");
+                }
+            }
+        }
+
+    </script>
+</body>
+
+</html>
